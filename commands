@@ -41,6 +41,8 @@ case "$1" in
       echo "" > "$SERVICE_ROOT/ENV"
     fi
     SERVICE_NAME=$(get_service_name "$SERVICE")
+    command_run = 'docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/data" -v "$SERVICE_ROOT/config:/usr/local/etc" --env-file="$SERVICE_ROOT/ENV" -d --restart always --label dokku=service --label dokku.service=sphinx "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" ./searchd.sh'
+    echo $command_run
     ID=$(docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/data" -v "$SERVICE_ROOT/config:/usr/local/etc" --env-file="$SERVICE_ROOT/ENV" -d --restart always --label dokku=service --label dokku.service=sphinx "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" ./searchd.sh)
     echo "$ID" > "$SERVICE_ROOT/ID"
 
