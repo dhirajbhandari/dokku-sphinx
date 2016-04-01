@@ -204,7 +204,7 @@ service_port_unpause() {
 
   echo "${PORTS[@]}" > "$PORT_FILE"
 
-  docker run -d --link "$SERVICE_NAME:mysql" --name "$EXPOSED_NAME" $(docker_ports_options "${PORTS[@]}") --restart always --label dokku=ambassador --label dokku.ambassador=mysql svendowideit/ambassador > /dev/null
+  docker run -d --link "$SERVICE_NAME:sphinx" --name "$EXPOSED_NAME" $(docker_ports_options "${PORTS[@]}") --restart always --label dokku=ambassador --label dokku.ambassador=sphinx svendowideit/ambassador > /dev/null
   if [[ "$LOG_FAIL" == "true" ]]; then
     dokku_log_info1 "Service $SERVICE exposed on port(s) ${PORTS[*]}"
   fi
@@ -275,7 +275,7 @@ service_url() {
 
   local PASSWORD="$(cat "$SERVICE_ROOT/PASSWORD")"
   local SERVICE_ALIAS="$(service_alias "$SERVICE")"
-  echo "$PLUGIN_SCHEME://mysql:$PASSWORD@$SERVICE_ALIAS:${PLUGIN_DATASTORE_PORTS[0]}/$SERVICE"
+  echo "$PLUGIN_SCHEME://sphinx:$PASSWORD@$SERVICE_ALIAS:${PLUGIN_DATASTORE_PORTS[0]}/$SERVICE"
 }
 
 is_container_status () {
@@ -357,6 +357,6 @@ service_linked_apps() {
 
 update_plugin_scheme_for_app() {
   local APP=$1
-  local MYSQL_DATABASE_SCHEME=$(config_get $APP MYSQL_DATABASE_SCHEME)
-  PLUGIN_SCHEME=${MYSQL_DATABASE_SCHEME:-$PLUGIN_SCHEME}
+  local SPHINX_DATABASE_SCHEME=$(config_get $APP SPHINX_DATABASE_SCHEME)
+  PLUGIN_SCHEME=${SPHINX_DATABASE_SCHEME:-$PLUGIN_SCHEME}
 }
