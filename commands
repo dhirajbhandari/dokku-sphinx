@@ -41,7 +41,7 @@ case "$1" in
       echo "" > "$SERVICE_ROOT/ENV"
     fi
     SERVICE_NAME=$(get_service_name "$SERVICE")
-    curl "https://gist.githubusercontent.com/misteral/97e7a249e52e6cd702ebacff620ae335/raw/9db002f5da33d70a2efbe2c3c3e794fa47fbb59f/spninx.conf" > "$SERVICE_ROOT/config/spninx.conf" || dokku_log_fail "Unable to download the default sphinx.conf to the config directory"
+    curl "https://gist.githubusercontent.com/misteral/97e7a249e52e6cd702ebacff620ae335/raw/9db002f5da33d70a2efbe2c3c3e794fa47fbb59f/sphinx.conf" > "$SERVICE_ROOT/config/spninx.conf" || dokku_log_fail "Unable to download the default sphinx.conf to the config directory"
     ID=$(docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/data" -v "$SERVICE_ROOT/config:/usr/local/etc" --env-file="$SERVICE_ROOT/ENV" -d --restart always --label dokku=service --label dokku.service=sphinx "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" ./searchd.sh)
     echo "$ID" > "$SERVICE_ROOT/ID"
 
